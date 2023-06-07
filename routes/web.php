@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
 use App\Models\Product;
 
 /*
@@ -20,4 +22,14 @@ Route::get('/', function () {
     return view('welcome', compact('products'));
 })->name('welcome');
 
-Route::resource('products', ProductController::class)->except(['show','edit','update','delete']);
+Route::get('login', [LoginController::class, 'create'])
+    ->name('login');
+
+Route::post('login', [LoginController::class, 'authenticate']);
+
+Route::post('/logout', [LogoutController::class, 'destroy'])
+    ->middleware('auth')->name('logout');
+
+Route::resource('products', ProductController::class)
+    ->except(['show','edit','update','delete'])
+    ->middleware('can:add-products');
