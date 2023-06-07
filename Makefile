@@ -16,4 +16,6 @@ validate:
 lint:
 	composer exec --verbose phpcs -- --standard=PSR12 app public routes tests --ignore=public/
 test:
+	php artisan migrate --env=testing
+	php artisan db:seed --env=testing
 	php artisan test --coverage --min=80

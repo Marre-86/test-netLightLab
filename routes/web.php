@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
+use App\Models\Product;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +16,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    $products = Product::latest()->take(5)->get();
+    return view('welcome', compact('products'));
+})->name('welcome');
+
+Route::resource('products', ProductController::class)->except(['show','edit','update','delete']);
