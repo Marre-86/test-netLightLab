@@ -15,7 +15,13 @@ class LoginController extends Controller
      */
     public function create()
     {
-        return view('login');
+        if (auth()->check()) {
+            // User is authenticated
+            return view('products.create');
+        } else {
+            // User is not authenticated
+            return view('login');
+        }
     }
 
     /**
